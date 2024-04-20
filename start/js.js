@@ -1,7 +1,8 @@
 "use strict";
 
+// 
 const account1 = {
-  owner: "Dmitrii Fokeev",
+  owner: "Nikita Lisicyn",
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   pin: 1111,
 };
@@ -26,7 +27,7 @@ const account4 = {
 
 const accounts = [account1, account2, account3, account4];
 
-// Elements
+// получение всех элементов
 const labelWelcome = document.querySelector(".welcome");
 const labelDate = document.querySelector(".date");
 const labelBalance = document.querySelector(".balance__value");
@@ -52,6 +53,8 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
+
+/// добавление операций из массива в html 
 function displayMovements(movements) {
   containerMovements.innerHTML = "";
   movements.forEach(function (value, index) {
@@ -69,9 +72,9 @@ function displayMovements(movements) {
     containerMovements.insertAdjacentHTML("afterbegin", html)
   })
 };
-
 displayMovements(account1.movements);
 
+//функция создает логин из первых 2 букв имени и фамилии
 function createLogIn(accs) {
   accs.forEach(acc => {
     acc.logIn = acc.owner
@@ -85,4 +88,12 @@ function createLogIn(accs) {
 }
 
 createLogIn(accounts);
+console.log(accounts);
+
+// функция считает сумму всех депозитов и выводит их в html
+function calculateBalance(acc) {
+    const balance = acc.movements.reduce((acc, cur) => acc + cur);
+    labelBalance.innerHTML = balance + '₽'
+}
+calculateBalance(account1);
 console.log(accounts);
