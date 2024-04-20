@@ -97,3 +97,14 @@ function calculateBalance(acc) {
 }
 calculateBalance(account1);
 console.log(accounts);
+
+// функция выводит прибыль, убыток и выводит их сумму в html
+function sumIn(movements) {
+  let sumIn = 0, sumOut = 0;
+  movements.forEach(move => {move > 0 ? sumIn+=move : sumOut+=move})
+  labelSumIn.innerHTML = sumIn + '₽';
+  labelSumOut.innerHTML = sumOut + '₽';
+  labelSumInterest.innerHTML = (sumIn + sumOut);
+}
+
+sumIn(account1.movements);
