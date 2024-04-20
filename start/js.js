@@ -87,11 +87,11 @@ function createLogIn(accs) {
 }
 
 createLogIn(accounts);
-// функция считает сумму всех депозитов и выводит их в html
+// функция считает баланс и выводит в html
 function calculateBalance(acc) {
-    const balance = acc.movements.reduce((acc, cur) => acc + cur);
-    labelBalance.innerHTML = balance + '₽'
-}
+    acc.balance = acc.movements.reduce((acc, cur) => acc + cur);
+    labelBalance.innerHTML = acc.balance + '₽';
+};
 
 // функция выводит прибыль, убыток и выводит их сумму в html
 function sumIn(movements) {
@@ -102,6 +102,13 @@ function sumIn(movements) {
   labelSumInterest.innerHTML = (sumIn + sumOut);
 }
 
+
+// функция обновляет интерфейс при изменении состояния аккаунта
+function updateUI(accs) {
+  displayMovements(accs.movements);
+  calculateBalance(accs);
+  sumIn(accs.movements);
+}
 
 
 // реализация логина в акккаунт
@@ -115,8 +122,18 @@ btnLogin.addEventListener("click", (e) => {
     containerApp.style.opacity = 100;
     inputLoginUsername.value = inputLoginPin.value = "";
     console.log(currentAccount);
-    displayMovements(currentAccount.movements);
-    calculateBalance(currentAccount);
-    sumIn(currentAccount.movements);
+    updateUI(currentAccount);
+  }
+})
+
+btnTransfer.addEventListener("click", (e) => {
+  e.preventDefault();
+  const reciveAcc = accounts.find((acc) => {return acc.logIn === inputTransferTo.value}) 
+  const amount = +inputTransferAmount.value;
+  if(reciveAcc && amount >0 && currentAccount.balance >= amount && reciveAcc.logIn !== currentAccount.logIn) {
+    currentAccount.movements.push(-amount);
+    reciveAcc.movements.push(amount);
+    updateUI(currentAccount);
+    inputTransferTo.value = inputTransferAmount.value = "";
   }
 })
