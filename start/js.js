@@ -72,7 +72,6 @@ function displayMovements(movements) {
     containerMovements.insertAdjacentHTML("afterbegin", html)
   })
 };
-displayMovements(account1.movements);
 
 //функция создает логин из первых 2 букв имени и фамилии
 function createLogIn(accs) {
@@ -88,15 +87,11 @@ function createLogIn(accs) {
 }
 
 createLogIn(accounts);
-console.log(accounts);
-
 // функция считает сумму всех депозитов и выводит их в html
 function calculateBalance(acc) {
     const balance = acc.movements.reduce((acc, cur) => acc + cur);
     labelBalance.innerHTML = balance + '₽'
 }
-calculateBalance(account1);
-console.log(accounts);
 
 // функция выводит прибыль, убыток и выводит их сумму в html
 function sumIn(movements) {
@@ -107,4 +102,21 @@ function sumIn(movements) {
   labelSumInterest.innerHTML = (sumIn + sumOut);
 }
 
-sumIn(account1.movements);
+
+
+// реализация логина в акккаунт
+let currentAccount;
+btnLogin.addEventListener("click", (e) => {
+  e.preventDefault();
+  currentAccount = accounts.find((acc) => {
+    return acc.logIn === inputLoginUsername.value;
+  });
+  if (currentAccount && currentAccount.pin === +inputLoginPin.value) {
+    containerApp.style.opacity = 100;
+    inputLoginUsername.value = inputLoginPin.value = "";
+    console.log(currentAccount);
+    displayMovements(currentAccount.movements);
+    calculateBalance(currentAccount);
+    sumIn(currentAccount.movements);
+  }
+})
