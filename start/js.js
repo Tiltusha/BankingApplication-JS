@@ -136,7 +136,7 @@ btnTransfer.addEventListener("click", (e) => {
   }
 });
 
-// фунция закрытия аккаунта
+// функция закрытия аккаунта
 btnClose.addEventListener('click', (e) => {
   e.preventDefault();
   if (inputCloseUsername.value === currentAccount.logIn && +inputClosePin.value === currentAccount.pin) {
@@ -146,5 +146,19 @@ btnClose.addEventListener('click', (e) => {
     console.log(index);
     accounts.splice(index, 1);
     containerApp.style.opacity = 0;
+    inputCloseUsername.value = inputClosePin.value = '';
   }}
 );
+
+
+// функция внесения денег
+btnLoan.addEventListener('click', (e) => {
+  e.preventDefault();
+  const amount = +inputLoanAmount.value;
+  if (amount > 0) {
+    currentAccount.movements.push(amount);
+    updateUI(currentAccount);
+    inputLoanAmount.value = '';
+  }
+})
+
