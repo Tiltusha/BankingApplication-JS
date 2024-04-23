@@ -53,7 +53,6 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
-
 /// добавление операций из массива в html 
 function displayMovements(movements) {
   containerMovements.innerHTML = "";
@@ -102,14 +101,12 @@ function sumIn(movements) {
   labelSumInterest.innerHTML = (sumIn + sumOut);
 }
 
-
 // функция обновляет интерфейс при изменении состояния аккаунта
 function updateUI(accs) {
   displayMovements(accs.movements);
   calculateBalance(accs);
   sumIn(accs.movements);
 }
-
 
 // реализация логина в акккаунт
 let currentAccount;
@@ -126,6 +123,7 @@ btnLogin.addEventListener("click", (e) => {
   }
 })
 
+// перевод денег между акккаунтами
 btnTransfer.addEventListener("click", (e) => {
   e.preventDefault();
   const reciveAcc = accounts.find((acc) => {return acc.logIn === inputTransferTo.value}) 
@@ -136,4 +134,17 @@ btnTransfer.addEventListener("click", (e) => {
     updateUI(currentAccount);
     inputTransferTo.value = inputTransferAmount.value = "";
   }
-})
+});
+
+// фунция закрытия аккаунта
+btnClose.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (inputCloseUsername.value === currentAccount.logIn && +inputClosePin.value === currentAccount.pin) {
+    const index = accounts.findIndex((acc) => {
+      return acc.logIn === currentAccount.logIn
+    })
+    console.log(index);
+    accounts.splice(index, 1);
+    containerApp.style.opacity = 0;
+  }}
+);
