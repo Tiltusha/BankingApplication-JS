@@ -54,9 +54,11 @@ const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
 /// добавление операций из массива в html 
-function displayMovements(movements) {
+function displayMovements(movements, sort = false) {
   containerMovements.innerHTML = "";
-  movements.forEach(function (value, index) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (value, index) {
     const type = value > 0 ? "deposit" : "withdrawal";
     const operation = value > 0? "зачисление" : "снятие";
     const html = `
@@ -162,3 +164,15 @@ btnLoan.addEventListener('click', (e) => {
   }
 })
 
+// вывод общего количества денег у всех пользователей
+const allBalance = accounts.map((acc) => acc.movements).flat().reduce((acc, cur) => acc + cur, 0);
+console.log(allBalance);
+
+
+let sorted = false;
+// кнопка сортировки
+btnSort.addEventListener('click', (e) => {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+})
