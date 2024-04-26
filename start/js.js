@@ -176,3 +176,18 @@ btnSort.addEventListener('click', (e) => {
   displayMovements(currentAccount.movements, !sorted);
   sorted = !sorted;
 })
+
+/// 
+// const arr = [1,2, 3, 4, 5];
+// arr.fill(1);
+// console.log(arr);
+
+// const str = '12345'
+// console.log(Array.from(str, (val, index) => {return 'Число ' + val}))
+
+// смена Р на RUb при клике на баланс (юзлес но прикольно)
+labelBalance.addEventListener('click', () => {
+  Array.from(document.querySelectorAll('.movements__value'), (val, i) => {
+    return val.innerText = val.textContent.replace('₽', ' RUB')
+  });
+})
