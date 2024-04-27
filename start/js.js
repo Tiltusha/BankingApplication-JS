@@ -13,7 +13,7 @@ const account1 = {
     "2020-05-08T14:11:59.604Z",
     "2023-01-29T17:01:17.194Z",
     "2023-01-31T23:36:17.929Z",
-    "2023-02-02T10:51:36.790Z",
+    "2024-04-27T10:51:36.790Z",
   ],
   currency: "RUB",
   locale: "pt-PT",
@@ -106,13 +106,9 @@ function displayMovements(acc, sort = false) {
   movs.forEach(function (value, index) {
     const type = value > 0 ? "deposit" : "withdrawal";
     const operation = value > 0? "зачисление" : "снятие";
+
     const date = new Date(acc.movementsDates[index])
-    const year = date.getFullYear();
-    const month = `${date.getMonth() + 1}`.padStart(2, 0)
-    const day = `${date.getDate()}`.padStart(2, 0)
-    const hours = `${date.getHours()}`.padStart(2, 0)
-    const minutes = `${date.getMinutes()}`.padStart(2, 0)
-    const displayDate = `${day}/${month}/${year} ${hours}:${minutes}`
+    const displayDate = formatMovementsDate(date)
 
     const html = `
       <div class="movements__row">
@@ -242,17 +238,27 @@ btnSort.addEventListener('click', (e) => {
   sorted = !sorted;
 })
 
-/// 
-// const arr = [1,2, 3, 4, 5];
-// arr.fill(1);
-// console.log(arr);
-
-// const str = '12345'
-// console.log(Array.from(str, (val, index) => {return 'Число ' + val}))
-
 // смена Р на RUb при клике на баланс (юзлес но прикольно)
 labelBalance.addEventListener('click', () => {
   Array.from(document.querySelectorAll('.movements__value'), (val, i) => {
     return val.innerText = val.textContent.replace('₽', ' RUB')
   });
 })
+
+function formatMovementsDate(date) {
+  const calcdaysPassed = (date1, date2) =>  {
+    return Math.round((date1 - date2) / (1000 * 60 * 60 * 20));
+  };
+  const daysPassed = calcdaysPassed(new Date(), date);
+  // console.log(daysPassed)
+  if (daysPassed === 0) return 'Сегодня'
+  if (daysPassed === 1) return 'Вчера'
+  if (daysPassed === 2) return '2 дня дня назад'
+
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, 0)
+  const day = `${date.getDate()}`.padStart(2, 0)
+  const hours = `${date.getHours()}`.padStart(2, 0)
+  const minutes = `${date.getMinutes()}`.padStart(2, 0)
+  return `${day}/${month}/${year} ${hours}:${minutes}`
+    }
