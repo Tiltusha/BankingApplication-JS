@@ -179,8 +179,10 @@ btnLogin.addEventListener("click", (e) => {
     const minutes = `${now.getMinutes()}`.padStart(2, 0)
     labelDate.textContent = day + "/" + (month) + "/" + year
 
-    console.log(currentAccount);
+    // console.log(currentAccount);
+    startLogOut();
     updateUI(currentAccount);
+
   }
 })
 
@@ -262,3 +264,18 @@ function formatMovementsDate(date) {
   const minutes = `${date.getMinutes()}`.padStart(2, 0)
   return `${day}/${month}/${year} ${hours}:${minutes}`
     }
+
+// таймер сессии
+function startLogOut() {
+  let time = 299
+  const timer = setInterval(() => {
+    const min = Math.trunc(time / 60);
+    const seconds = time % 60;
+    labelTimer.textContent = `${min}:${seconds}`;
+    time--;
+    if (timer === 0) {
+      clearInterval(timer);
+      containerApp.style.opacity = 0;
+    }
+  }, 1000)
+}
